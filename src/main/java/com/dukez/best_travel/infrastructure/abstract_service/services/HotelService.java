@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dukez.best_travel.api.models.response.HotelResponse;
 import com.dukez.best_travel.domain.entities.HotelEntity;
@@ -16,10 +17,9 @@ import com.dukez.best_travel.domain.repositories.HotelRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IHotelService;
 import com.dukez.best_travel.util.SortType;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 @AllArgsConstructor
 public class HotelService implements IHotelService {

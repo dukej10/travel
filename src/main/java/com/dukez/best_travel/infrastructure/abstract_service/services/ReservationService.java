@@ -9,16 +9,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.dukez.best_travel.api.models.request.ReservationRequest;
-import com.dukez.best_travel.api.models.response.FlyResponse;
 import com.dukez.best_travel.api.models.response.HotelResponse;
 import com.dukez.best_travel.api.models.response.ReservationResponse;
-import com.dukez.best_travel.api.models.response.TicketResponse;
 import com.dukez.best_travel.domain.entities.ReservationEntity;
-import com.dukez.best_travel.domain.entities.TicketEntity;
 import com.dukez.best_travel.domain.repositories.CustomerRepository;
 import com.dukez.best_travel.domain.repositories.HotelRepository;
 import com.dukez.best_travel.domain.repositories.ReservationRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IReservationService;
+import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -33,15 +31,17 @@ public class ReservationService implements IReservationService {
     private final ReservationRepository reservationRepository;
     private final HotelRepository hotelRepository;
     private final CustomerRepository customerRepository;
+    private final CustomerHelper customerHelper;
 
-    private static final BigDecimal charger_price_reservation = BigDecimal.valueOf(0.2);
+    public static final BigDecimal charger_price_reservation = BigDecimal.valueOf(0.2);
 
     @Override
     public ReservationResponse create(ReservationRequest request) {
         // TODO Auto-generated method stub
         var hotel = hotelRepository.findById(request.getIdHotel()).orElseThrow();
-        var client = customerRepository.findById(request.getIdClient()).orElseThrow();
-        var reservationToPersist = ReservationEntity.builder().id(UUID.randomUUID()).customer(client).hotel(hotel)
+        var customer = customerRepository.findById(request.getIdClient()).orElseThrow();
+        var reservationToPersist = ReservationEntity.builder().id(UUID.randomUUID()).customer(
+                customer).hotel(hotel)
                 .dateStart(
                         LocalDate.now()
 
@@ -49,6 +49,9 @@ public class ReservationService implements IReservationService {
                 .totalDays(request.getTotalDays())
                 .price(hotel.getPrice().add(hotel.getPrice().multiply(charger_price_reservation))).build();
         var reservation = reservationRepository.save(reservationToPersist);
+        // Incrementar el número de reservas del cliente
+        this.customerHelper.incrase(customer.getDni(), this.getClass());
+
         return entityToResponse(reservation);
     }
 

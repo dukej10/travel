@@ -13,6 +13,8 @@ import com.dukez.best_travel.domain.repositories.CustomerRepository;
 import com.dukez.best_travel.domain.repositories.FlyRepository;
 import com.dukez.best_travel.domain.repositories.TicketRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.ITickerService;
+import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
+
 import org.springframework.beans.BeanUtils;
 
 import lombok.AllArgsConstructor;
@@ -30,8 +32,9 @@ public class TicketService implements ITickerService {
     private final FlyRepository flyRepository;
     private final CustomerRepository customerRepository;
     private final TicketRepository ticketRepository;
+    private final CustomerHelper customerHelper;
 
-    private static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.25);
+    public static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.25);
 
     // nota: se puede ahorrar el siguiente constructor si se utiliza e
     // @AllArgsConstructor
@@ -59,6 +62,8 @@ public class TicketService implements ITickerService {
                 .customer(customer)
                 .build();
         var ticketPersist = ticketRepository.save(ticketToPersist);
+        // Incrementar número de vuelos del cliente
+        this.customerHelper.incrase(customer.getDni(), this.getClass());
 
         log.info("Ticket saved with id {}", ticketPersist.getId());
         return this.entityToResponse(ticketPersist);

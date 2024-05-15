@@ -1,5 +1,8 @@
 package com.dukez.best_travel.api.controllers.error_handler;
 
+import java.util.ArrayList;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -9,13 +12,6 @@ import com.dukez.best_travel.api.models.response.BaseErrorResponse;
 import com.dukez.best_travel.api.models.response.ErrorResponse;
 import com.dukez.best_travel.api.models.response.ErrorsResponse;
 import com.dukez.best_travel.util.exceptions.IdNotFoundException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @RestControllerAdvice
 @ResponseStatus(HttpStatus.BAD_REQUEST)

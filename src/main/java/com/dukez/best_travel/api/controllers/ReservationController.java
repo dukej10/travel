@@ -17,37 +17,34 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dukez.best_travel.api.models.request.ReservationRequest;
 import com.dukez.best_travel.api.models.response.ReservationResponse;
 import com.dukez.best_travel.infrastructure.abstract_service.IReservationService;
-import com.dukez.best_travel.infrastructure.abstract_service.ITickerService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/reservation")
-@Slf4j
 public class ReservationController {
-    private final ITickerService tickerService;
     private final IReservationService reservationService;
 
     @PostMapping(path = "create")
-    public ResponseEntity<ReservationResponse> createTicket(@RequestBody ReservationRequest reservation) {
+    public ResponseEntity<ReservationResponse> createReservation(@Valid @RequestBody ReservationRequest reservation) {
         return ResponseEntity.ok(reservationService.create(reservation));
     }
 
     @PutMapping(path = "update/{id}")
-    public ResponseEntity<ReservationResponse> updateTicket(@PathVariable UUID id,
-            @RequestBody ReservationRequest reservation) {
+    public ResponseEntity<ReservationResponse> updateReservation(@PathVariable UUID id,
+            @Valid @RequestBody ReservationRequest reservation) {
         return ResponseEntity.ok(reservationService.update(id, reservation));
     }
 
     @GetMapping(path = "{id}")
-    public ResponseEntity<ReservationResponse> getReservatioEntity(@PathVariable UUID id) {
+    public ResponseEntity<ReservationResponse> getReservatio(@PathVariable UUID id) {
         return ResponseEntity.ok(reservationService.read(id));
     }
 
     @GetMapping(path = "find-price")
-    public ResponseEntity<Map<String, BigDecimal>> findPriceTicket(@RequestParam Long hotelId) {
+    public ResponseEntity<Map<String, BigDecimal>> findPriceReservation(@RequestParam Long hotelId) {
         return ResponseEntity.ok(Map.of("price", reservationService.findPrice(hotelId)));
 
     }

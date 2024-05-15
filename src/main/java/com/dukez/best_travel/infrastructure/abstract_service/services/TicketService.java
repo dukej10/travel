@@ -13,6 +13,7 @@ import com.dukez.best_travel.domain.repositories.CustomerRepository;
 import com.dukez.best_travel.domain.repositories.FlyRepository;
 import com.dukez.best_travel.domain.repositories.TicketRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.ITickerService;
+import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
 import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
 
 import org.springframework.beans.BeanUtils;
@@ -33,7 +34,7 @@ public class TicketService implements ITickerService {
     private final CustomerRepository customerRepository;
     private final TicketRepository ticketRepository;
     private final CustomerHelper customerHelper;
-
+    private BlackListHelper blackListHelper;
     public static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.25);
 
     // nota: se puede ahorrar el siguiente constructor si se utiliza e
@@ -48,6 +49,9 @@ public class TicketService implements ITickerService {
 
     @Override
     public TicketResponse create(TicketRequest request) {
+        // Verificar si el cliente está en la lista negra
+        blackListHelper.isInBlackListCustomer(request.getIdClient());
+
         var fly = flyRepository.findById(request.getIdFly()).orElseThrow();
         System.out.println("Fly: " + fly);
         var customer = customerRepository.findById(request.getIdClient()).orElseThrow();

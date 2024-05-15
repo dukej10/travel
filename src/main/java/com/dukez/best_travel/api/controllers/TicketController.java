@@ -20,6 +20,7 @@ import com.dukez.best_travel.api.models.request.TicketRequest;
 import com.dukez.best_travel.api.models.response.TicketResponse;
 import com.dukez.best_travel.infrastructure.abstract_service.ITickerService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +33,7 @@ public class TicketController {
     private final ITickerService ticketService;
 
     @PostMapping(path = "create")
-    public ResponseEntity<TicketResponse> createTicket(@RequestBody TicketRequest ticket) {
+    public ResponseEntity<TicketResponse> createTicket(@Valid @RequestBody TicketRequest ticket) {
         log.info("Creating ticket with id {}", ticket);
         return ResponseEntity.ok(ticketService.create(ticket));
     }
@@ -44,7 +45,8 @@ public class TicketController {
     }
 
     @PutMapping(path = "update/{id}")
-    public ResponseEntity<TicketResponse> updateTicket(@PathVariable UUID id, @RequestBody TicketRequest entity) {
+    public ResponseEntity<TicketResponse> updateTicket(@PathVariable UUID id,
+            @Valid @RequestBody TicketRequest entity) {
         return ResponseEntity.ok(ticketService.update(id, entity));
     }
 

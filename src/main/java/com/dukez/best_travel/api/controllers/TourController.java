@@ -8,6 +8,7 @@ import com.dukez.best_travel.api.models.request.TourRequest;
 import com.dukez.best_travel.api.models.response.TourResponse;
 import com.dukez.best_travel.infrastructure.abstract_service.ITourService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,7 +32,7 @@ public class TourController {
     private final ITourService tourService;
 
     @PostMapping(path = "create")
-    public ResponseEntity<TourResponse> createTour(@RequestBody TourRequest request) {
+    public ResponseEntity<TourResponse> createTour(@Valid @RequestBody TourRequest request) {
 
         return ResponseEntity.ok(tourService.create(request));
     }

@@ -17,12 +17,10 @@ import com.dukez.best_travel.infrastructure.abstract_service.IHotelService;
 import com.dukez.best_travel.util.SortType;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/hotel")
-@Slf4j
 public class HotelContoller {
     private final IHotelService hotelService;
 

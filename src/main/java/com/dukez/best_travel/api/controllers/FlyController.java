@@ -16,17 +16,19 @@ import com.dukez.best_travel.api.models.response.FlyResponse;
 import com.dukez.best_travel.infrastructure.abstract_service.IFlyService;
 import com.dukez.best_travel.util.SortType;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/fly")
-@Slf4j
+@Tag(name = "Fly", description = "Endpoints for the flights catalog in the system.")
 public class FlyController {
 
     private final IFlyService flyService;
 
+    @Operation(summary = "Return all flights in the system according to the page number, quantity and type of order indicated..")
     @GetMapping(path = "all")
     public ResponseEntity<Page<FlyResponse>> getAllFlights(@RequestParam Integer page, @RequestParam Integer size,
             @RequestHeader(required = false) SortType sortType) {
@@ -36,12 +38,14 @@ public class FlyController {
         return response.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Returns all flights in the system whose price is less than the price provided.")
     @GetMapping(path = "less-price")
     public ResponseEntity<Set<FlyResponse>> getLessPrice(@RequestParam BigDecimal price) {
         var response = this.flyService.readLessPrice(price);
         return response.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Returns all flights in the system whose price is within the range provided.")
     @GetMapping(path = "between-price")
     public ResponseEntity<Set<FlyResponse>> getBetweenPrice(@RequestParam BigDecimal min,
             @RequestParam BigDecimal max) {
@@ -49,6 +53,7 @@ public class FlyController {
         return response.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Returns all flights in the system whose origin and destination are the same as those provided.")
     @GetMapping(path = "origin-destiny")
     public ResponseEntity<Set<FlyResponse>> getByOriginDestiny(@RequestParam String origin,
             @RequestParam String destiny) {

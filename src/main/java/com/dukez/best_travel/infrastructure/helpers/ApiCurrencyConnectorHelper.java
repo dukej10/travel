@@ -1,5 +1,7 @@
 package com.dukez.best_travel.infrastructure.helpers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Currency;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -23,14 +25,21 @@ public class ApiCurrencyConnectorHelper {
 
     private final String SYMBOL_CURRENCY_QUERY_PARAM = "&symbols={symbols}";
 
-    private final String CURRENCY_PATH = "/exchangerates_data/2024-05-16";
+    private final String CURRENCY_PATH = "/exchangerates_data/";
 
     public CurrencyDTO getCurrency(Currency currency) {
+
         return this.currencyWebClient.get()
-                .uri(uriBuilder -> uriBuilder.path(CURRENCY_PATH).query(BASE_CURRENCY_QUERY_PARAM).query(
-                        SYMBOL_CURRENCY_QUERY_PARAM).build(baseCurrency, currency.getCurrencyCode()))
+                .uri(uriBuilder -> uriBuilder.path(CURRENCY_PATH + getTodayDate()).query(BASE_CURRENCY_QUERY_PARAM)
+                        .query(
+                                SYMBOL_CURRENCY_QUERY_PARAM)
+                        .build(baseCurrency, currency.getCurrencyCode()))
                 .retrieve()
                 .bodyToMono(CurrencyDTO.class)
                 .block();
+    }
+
+    private String getTodayDate() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }

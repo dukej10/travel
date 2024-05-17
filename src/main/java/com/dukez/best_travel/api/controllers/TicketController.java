@@ -2,6 +2,7 @@ package com.dukez.best_travel.api.controllers;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,6 +81,14 @@ public class TicketController {
     public ResponseEntity<Map<String, BigDecimal>> findPriceTicket(@RequestParam Long flyId) {
         log.info("Getting price for fly with id {}", flyId);
         return ResponseEntity.ok(Collections.singletonMap("flyPrice", ticketService.findPrice(flyId)));
+    }
+
+    @Operation(summary = "Returns the price of the ticket for the flight with the id provided.")
+    @GetMapping(path = "find-price-currency")
+    public ResponseEntity<Map<String, Object>> findPriceTicketCurrency(@RequestParam Long flyId,
+            @RequestHeader(required = false) Currency currency) {
+        log.info("Getting price for fly with id {}", flyId);
+        return ResponseEntity.ok(ticketService.findPriceCurrency(flyId, currency));
     }
 
 }

@@ -1,5 +1,8 @@
 package com.dukez.best_travel.infrastructure.abstract_service.services;
 
+import java.util.Currency;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -13,8 +16,11 @@ import com.dukez.best_travel.domain.repositories.CustomerRepository;
 import com.dukez.best_travel.domain.repositories.FlyRepository;
 import com.dukez.best_travel.domain.repositories.TicketRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.ITickerService;
+import com.dukez.best_travel.infrastructure.helpers.ApiCurrencyConnectorHelper;
 import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
 import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
+import com.dukez.best_travel.util.Tables;
+import com.dukez.best_travel.util.exceptions.IdNotFoundException;
 
 import org.springframework.beans.BeanUtils;
 
@@ -36,6 +42,7 @@ public class TicketService implements ITickerService {
     private final CustomerHelper customerHelper;
     private BlackListHelper blackListHelper;
     public static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.25);
+    private final ApiCurrencyConnectorHelper currencyConnectorHelper;
 
     // nota: se puede ahorrar el siguiente constructor si se utiliza e
     // @AllArgsConstructor
@@ -52,7 +59,8 @@ public class TicketService implements ITickerService {
         // Verificar si el cliente está en la lista negra
         blackListHelper.isInBlackListCustomer(request.getIdClient());
 
-        var fly = flyRepository.findById(request.getIdFly()).orElseThrow();
+        var fly = flyRepository.findById(request.getIdFly()).orElseThrow(
+                () -> new IdNotFoundException(Tables.fly.name()));
         System.out.println("Fly: " + fly);
         var customer = customerRepository.findById(request.getIdClient()).orElseThrow();
         System.out.println("Customer: " + customer);
@@ -75,15 +83,17 @@ public class TicketService implements ITickerService {
 
     @Override
     public TicketResponse read(UUID id) {
-        var entity = ticketRepository.findById(id).orElseThrow();
-        return entityToResponse(entity);
+        var ticket = ticketRepository.findById(id).orElseThrow(() -> new IdNotFoundException(Tables.ticket.name()));
+        return entityToResponse(ticket);
 
     }
 
     @Override
     public TicketResponse update(UUID id, TicketRequest request) {
-        var ticketToUpdate = ticketRepository.findById(id).orElseThrow();
-        var fly = flyRepository.findById(request.getIdFly()).orElseThrow();
+        var ticketToUpdate = ticketRepository.findById(id).orElseThrow(
+                () -> new IdNotFoundException(Tables.ticket.name()));
+        var fly = flyRepository.findById(request.getIdFly()).orElseThrow(
+                () -> new IdNotFoundException(Tables.fly.name()));
 
         ticketToUpdate.setFly(fly);
         ticketToUpdate.setPrice(fly.getPrice().add(fly.getPrice().multiply(charger_price_percentage)));
@@ -97,15 +107,15 @@ public class TicketService implements ITickerService {
 
     @Override
     public void delete(UUID id) {
-        var ticketToDelete = ticketRepository.findById(id).orElseThrow();
+        var ticketToDelete = ticketRepository.findById(id).orElseThrow(
+                () -> new IdNotFoundException(Tables.fly.name()));
         this.ticketRepository.delete(ticketToDelete);
     }
 
     @Override
     public BigDecimal findPrice(Long flyId) {
         log.info("Finding price for fly with id {}", flyId);
-        // TODO Auto-generated method stub
-        var fly = flyRepository.findById(flyId).orElseThrow();
+        var fly = flyRepository.findById(flyId).orElseThrow(() -> new IdNotFoundException(Tables.fly.name()));
         System.out.println("Fly: " + fly);
         return fly.getPrice().add(
                 fly.getPrice().multiply(charger_price_percentage));
@@ -118,6 +128,27 @@ public class TicketService implements ITickerService {
         BeanUtils.copyProperties(entity.getFly(), flyResponse);
         response.setFly(flyResponse);
 
+        return response;
+    }
+
+    @Override
+    public Map<String, Object> findPriceCurrency(Long flyId, Currency currency) {
+        Map<String, Object> response = new HashMap<>();
+        String currencyCode = currency.getCurrencyCode();
+        var fly = flyRepository.findById(flyId).orElseThrow(() -> new IdNotFoundException(Tables.fly.name()));
+
+        BigDecimal price = fly.getPrice();
+        var priceInDollars = price.add(price.multiply(charger_price_percentage));
+        if (currencyCode.equals("USD")) {
+            price = priceInDollars;
+        } else {
+            var currencyDTO = this.currencyConnectorHelper.getCurrency(currency);
+
+            price = priceInDollars.multiply(currencyDTO.getRates().get(currency));
+        }
+        response.put("currency", currency.getCurrencyCode());
+
+        response.put("price", price);
         return response;
     }
 

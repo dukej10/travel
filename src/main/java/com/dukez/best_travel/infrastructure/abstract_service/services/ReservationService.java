@@ -3,6 +3,9 @@ package com.dukez.best_travel.infrastructure.abstract_service.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Currency;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -16,10 +19,12 @@ import com.dukez.best_travel.domain.repositories.CustomerRepository;
 import com.dukez.best_travel.domain.repositories.HotelRepository;
 import com.dukez.best_travel.domain.repositories.ReservationRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IReservationService;
+import com.dukez.best_travel.infrastructure.helpers.ApiCurrencyConnectorHelper;
+import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
 import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
 import com.dukez.best_travel.util.Tables;
 import com.dukez.best_travel.util.exceptions.IdNotFoundException;
-import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
+
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +39,8 @@ public class ReservationService implements IReservationService {
         private final HotelRepository hotelRepository;
         private final CustomerRepository customerRepository;
         private final CustomerHelper customerHelper;
-        private BlackListHelper blackListHelper;
+        private final BlackListHelper blackListHelper;
+        private final ApiCurrencyConnectorHelper currencyConnectorHelper;
 
         public static final BigDecimal charger_price_reservation = BigDecimal.valueOf(0.2);
 
@@ -112,6 +118,32 @@ public class ReservationService implements IReservationService {
                 var hotelResponse = new HotelResponse();
                 BeanUtils.copyProperties(entity.getHotel(), hotelResponse);
                 response.setHotel(hotelResponse);
+
+                return response;
+        }
+
+        @Override
+        public Map<String, Object> findPriceCurrency(Long hotelId, Currency currency) {
+                Map<String, Object> response = new HashMap<>();
+                String currencyCode = currency.getCurrencyCode();
+                var hotel = this.hotelRepository.findById(hotelId).orElseThrow(
+                                () -> new IdNotFoundException(Tables.hotel.name()));
+                BigDecimal price = hotel.getPrice();
+
+                var priceInDollars = hotel.getPrice().add(
+                                hotel.getPrice().multiply(charger_price_reservation));
+                if (currencyCode.equals("USD")) {
+                        price = priceInDollars;
+
+                } else {
+                        var currencyDTO = this.currencyConnectorHelper.getCurrency(currency);
+                        log.info("API Currency in {}, response: {}", currencyDTO.getExchangeDate().toString(),
+                                        currencyDTO.getRates());
+                        price = priceInDollars.multiply(currencyDTO.getRates().get(currency));
+                }
+                response.put("currency", currency.getCurrencyCode());
+
+                response.put("price", price);
 
                 return response;
         }

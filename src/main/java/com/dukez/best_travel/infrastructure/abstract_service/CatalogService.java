@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.springframework.data.domain.Page;
 
-import com.dukez.best_travel.util.SortType;
+import com.dukez.best_travel.util.consts.SortType;
 
 public interface CatalogService<R> {
 

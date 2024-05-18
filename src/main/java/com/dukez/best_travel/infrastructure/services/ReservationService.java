@@ -1,4 +1,4 @@
-package com.dukez.best_travel.infrastructure.abstract_service.services;
+package com.dukez.best_travel.infrastructure.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ import com.dukez.best_travel.infrastructure.abstract_service.IReservationService
 import com.dukez.best_travel.infrastructure.helpers.ApiCurrencyConnectorHelper;
 import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
 import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
-import com.dukez.best_travel.util.Tables;
+import com.dukez.best_travel.util.consts.Tables;
 import com.dukez.best_travel.util.exceptions.IdNotFoundException;
 
 import jakarta.transaction.Transactional;
@@ -41,7 +41,6 @@ public class ReservationService implements IReservationService {
         private final CustomerHelper customerHelper;
         private final BlackListHelper blackListHelper;
         private final ApiCurrencyConnectorHelper currencyConnectorHelper;
-
         public static final BigDecimal charger_price_reservation = BigDecimal.valueOf(0.2);
 
         @Override

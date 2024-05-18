@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dukez.best_travel.api.models.response.HotelResponse;
 import com.dukez.best_travel.infrastructure.abstract_service.IHotelService;
-import com.dukez.best_travel.util.SortType;
+import com.dukez.best_travel.util.consts.SortType;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

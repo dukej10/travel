@@ -1,4 +1,4 @@
-package com.dukez.best_travel.infrastructure.abstract_service.services;
+package com.dukez.best_travel.infrastructure.services;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -15,7 +15,7 @@ import com.dukez.best_travel.api.models.response.HotelResponse;
 import com.dukez.best_travel.domain.entities.HotelEntity;
 import com.dukez.best_travel.domain.repositories.HotelRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IHotelService;
-import com.dukez.best_travel.util.SortType;
+import com.dukez.best_travel.util.consts.SortType;
 
 import lombok.AllArgsConstructor;
 

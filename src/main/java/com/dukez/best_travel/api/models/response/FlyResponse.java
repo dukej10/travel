@@ -2,12 +2,13 @@ package com.dukez.best_travel.api.models.response;
 
 import java.io.Serializable;
 
-import com.dukez.best_travel.util.AeroLine;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
+
+import com.dukez.best_travel.util.consts.AeroLine;
 
 @NoArgsConstructor
 @AllArgsConstructor

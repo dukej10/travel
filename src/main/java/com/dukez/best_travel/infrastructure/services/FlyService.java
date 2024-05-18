@@ -1,4 +1,4 @@
-package com.dukez.best_travel.infrastructure.abstract_service.services;
+package com.dukez.best_travel.infrastructure.services;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -15,7 +15,7 @@ import com.dukez.best_travel.api.models.response.FlyResponse;
 import com.dukez.best_travel.domain.entities.FlyEntity;
 import com.dukez.best_travel.domain.repositories.FlyRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IFlyService;
-import com.dukez.best_travel.util.SortType;
+import com.dukez.best_travel.util.consts.SortType;
 
 import lombok.AllArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.dukez.best_travel.util;
+package com.dukez.best_travel.util.consts;
 
 public enum Tables {
     customer,

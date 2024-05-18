@@ -1,4 +1,4 @@
-package com.dukez.best_travel.infrastructure.abstract_service.services;
+package com.dukez.best_travel.infrastructure.services;
 
 import java.util.Currency;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import com.dukez.best_travel.infrastructure.abstract_service.ITickerService;
 import com.dukez.best_travel.infrastructure.helpers.ApiCurrencyConnectorHelper;
 import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
 import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
-import com.dukez.best_travel.util.Tables;
+import com.dukez.best_travel.util.consts.Tables;
 import com.dukez.best_travel.util.exceptions.IdNotFoundException;
 
 import org.springframework.beans.BeanUtils;

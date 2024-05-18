@@ -3,6 +3,7 @@ package com.dukez.best_travel.api.models.request;
 import java.io.Serializable;
 import java.util.Set;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,8 @@ public class TourRequest implements Serializable {
 
     @Size(min = 1, message = "The hotels must have at least one hotel")
     private Set<TourHotelRequest> hotels;
+
+    @Email(message = "The email is not valid")
+    @NotBlank(message = "The email is required")
+    private String email;
 }

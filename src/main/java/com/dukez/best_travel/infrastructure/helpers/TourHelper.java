@@ -16,8 +16,8 @@ import com.dukez.best_travel.domain.entities.ReservationEntity;
 import com.dukez.best_travel.domain.entities.TicketEntity;
 import com.dukez.best_travel.domain.repositories.ReservationRepository;
 import com.dukez.best_travel.domain.repositories.TicketRepository;
-import com.dukez.best_travel.infrastructure.abstract_service.services.ReservationService;
-import com.dukez.best_travel.infrastructure.abstract_service.services.TicketService;
+import com.dukez.best_travel.infrastructure.services.ReservationService;
+import com.dukez.best_travel.infrastructure.services.TicketService;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

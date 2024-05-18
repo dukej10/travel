@@ -24,6 +24,7 @@ import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
 import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
 import com.dukez.best_travel.util.consts.Tables;
 import com.dukez.best_travel.util.exceptions.IdNotFoundException;
+import com.dukez.best_travel.util.functions.Functions;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,7 @@ public class ReservationService implements IReservationService {
         private final BlackListHelper blackListHelper;
         private final ApiCurrencyConnectorHelper currencyConnectorHelper;
         public static final BigDecimal charger_price_reservation = BigDecimal.valueOf(0.2);
+        private final Functions functions;
 
         @Override
         public ReservationResponse create(ReservationRequest request) {
@@ -64,7 +66,7 @@ public class ReservationService implements IReservationService {
                 var reservation = reservationRepository.save(reservationToPersist);
                 // Incrementar el número de reservas del cliente
                 this.customerHelper.incrase(customer.getDni(), this.getClass());
-
+                this.functions.sendEmail(request.getEmail(), customer.getFullName(), Tables.reservation.name());
                 return entityToResponse(reservation);
         }
 

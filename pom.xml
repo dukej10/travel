@@ -92,6 +92,11 @@
 			<artifactId>redisson</artifactId>
 			<version>3.18.1</version>
 		</dependency>
+		<!-- MONGODB -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
 
 
 	</dependencies>

@@ -12,14 +12,15 @@ import com.dukez.best_travel.api.models.response.BaseErrorResponse;
 import com.dukez.best_travel.api.models.response.ErrorResponse;
 import com.dukez.best_travel.api.models.response.ErrorsResponse;
 import com.dukez.best_travel.util.exceptions.IdNotFoundException;
+import com.dukez.best_travel.util.exceptions.UsernameNotFoundException;
 
 @RestControllerAdvice
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadRequestController {
 
     // Intercepta la excepción IdNotFoundException y devuelve el mensaje de error
-    @ExceptionHandler(IdNotFoundException.class)
-    public BaseErrorResponse handleIdNotFound(IdNotFoundException exception) {
+    @ExceptionHandler({ IdNotFoundException.class, UsernameNotFoundException.class })
+    public BaseErrorResponse handleIdNotFound(RuntimeException exception) {
         return ErrorResponse.builder().status(
                 HttpStatus.BAD_REQUEST.name()).errorCode(HttpStatus.BAD_REQUEST.value())
                 .message(exception.getMessage()).build();

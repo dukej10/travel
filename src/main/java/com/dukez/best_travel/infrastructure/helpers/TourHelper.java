@@ -9,13 +9,13 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
-import com.dukez.best_travel.domain.entities.CustomerEntity;
-import com.dukez.best_travel.domain.entities.FlyEntity;
-import com.dukez.best_travel.domain.entities.HotelEntity;
-import com.dukez.best_travel.domain.entities.ReservationEntity;
-import com.dukez.best_travel.domain.entities.TicketEntity;
-import com.dukez.best_travel.domain.repositories.ReservationRepository;
-import com.dukez.best_travel.domain.repositories.TicketRepository;
+import com.dukez.best_travel.domain.entities.jpa.CustomerEntity;
+import com.dukez.best_travel.domain.entities.jpa.FlyEntity;
+import com.dukez.best_travel.domain.entities.jpa.HotelEntity;
+import com.dukez.best_travel.domain.entities.jpa.ReservationEntity;
+import com.dukez.best_travel.domain.entities.jpa.TicketEntity;
+import com.dukez.best_travel.domain.repositories.jpa.ReservationRepository;
+import com.dukez.best_travel.domain.repositories.jpa.TicketRepository;
 import com.dukez.best_travel.infrastructure.services.ReservationService;
 import com.dukez.best_travel.infrastructure.services.TicketService;
 

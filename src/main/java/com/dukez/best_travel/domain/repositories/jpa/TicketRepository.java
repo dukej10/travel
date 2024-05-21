@@ -1,9 +1,10 @@
-package com.dukez.best_travel.domain.repositories;
+package com.dukez.best_travel.domain.repositories.jpa;
 
 import org.springframework.data.repository.CrudRepository;
-import java.util.UUID;
 
-import com.dukez.best_travel.domain.entities.TicketEntity;
+import com.dukez.best_travel.domain.entities.jpa.TicketEntity;
+
+import java.util.UUID;
 
 public interface TicketRepository extends CrudRepository<TicketEntity, UUID> {
 

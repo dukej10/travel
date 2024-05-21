@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import com.dukez.best_travel.api.models.request.ReservationRequest;
 import com.dukez.best_travel.api.models.response.HotelResponse;
 import com.dukez.best_travel.api.models.response.ReservationResponse;
-import com.dukez.best_travel.domain.entities.ReservationEntity;
-import com.dukez.best_travel.domain.repositories.CustomerRepository;
-import com.dukez.best_travel.domain.repositories.HotelRepository;
-import com.dukez.best_travel.domain.repositories.ReservationRepository;
+import com.dukez.best_travel.domain.entities.jpa.ReservationEntity;
+import com.dukez.best_travel.domain.repositories.jpa.CustomerRepository;
+import com.dukez.best_travel.domain.repositories.jpa.HotelRepository;
+import com.dukez.best_travel.domain.repositories.jpa.ReservationRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IReservationService;
 import com.dukez.best_travel.infrastructure.helpers.ApiCurrencyConnectorHelper;
 import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
@@ -66,6 +66,7 @@ public class ReservationService implements IReservationService {
                 var reservation = reservationRepository.save(reservationToPersist);
                 // Incrementar el número de reservas del cliente
                 this.customerHelper.incrase(customer.getDni(), this.getClass());
+                // Enviar correo electrónico al cliente para confirmar la creación de la reserva
                 this.functions.sendEmail(request.getEmail(), customer.getFullName(), Tables.reservation.name());
                 return entityToResponse(reservation);
         }

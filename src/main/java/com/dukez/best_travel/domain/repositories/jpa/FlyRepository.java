@@ -1,10 +1,12 @@
-package com.dukez.best_travel.domain.repositories;
+package com.dukez.best_travel.domain.repositories.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import com.dukez.best_travel.domain.entities.jpa.FlyEntity;
+
 import java.util.Set;
 import java.math.BigDecimal;
-import com.dukez.best_travel.domain.entities.FlyEntity;
 import java.util.UUID;
 import java.util.Optional;
 

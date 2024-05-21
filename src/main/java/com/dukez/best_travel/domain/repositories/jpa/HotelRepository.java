@@ -1,8 +1,9 @@
-package com.dukez.best_travel.domain.repositories;
+package com.dukez.best_travel.domain.repositories.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dukez.best_travel.domain.entities.HotelEntity;
+import com.dukez.best_travel.domain.entities.jpa.HotelEntity;
+
 import java.util.Set;
 import java.math.BigDecimal;
 import java.util.Optional;

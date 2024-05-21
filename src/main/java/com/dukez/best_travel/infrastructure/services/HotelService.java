@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dukez.best_travel.api.models.response.HotelResponse;
-import com.dukez.best_travel.domain.entities.HotelEntity;
-import com.dukez.best_travel.domain.repositories.HotelRepository;
+import com.dukez.best_travel.domain.entities.jpa.HotelEntity;
+import com.dukez.best_travel.domain.repositories.jpa.HotelRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IHotelService;
 import com.dukez.best_travel.util.consts.CacheConstants;
 import com.dukez.best_travel.util.consts.SortType;

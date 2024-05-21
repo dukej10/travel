@@ -1,4 +1,4 @@
-package com.dukez.best_travel.domain.entities;
+package com.dukez.best_travel.domain.entities.jpa;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

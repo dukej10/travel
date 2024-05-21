@@ -17,8 +17,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import com.dukez.best_travel.domain.entities.CustomerEntity;
-import com.dukez.best_travel.domain.repositories.CustomerRepository;
+import com.dukez.best_travel.domain.entities.jpa.CustomerEntity;
+import com.dukez.best_travel.domain.repositories.jpa.CustomerRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IReportService;
 
 import lombok.AllArgsConstructor;

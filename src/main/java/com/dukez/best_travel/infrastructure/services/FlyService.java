@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dukez.best_travel.api.models.response.FlyResponse;
-import com.dukez.best_travel.domain.entities.FlyEntity;
-import com.dukez.best_travel.domain.repositories.FlyRepository;
+import com.dukez.best_travel.domain.entities.jpa.FlyEntity;
+import com.dukez.best_travel.domain.repositories.jpa.FlyRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.IFlyService;
 import com.dukez.best_travel.util.consts.CacheConstants;
 import com.dukez.best_travel.util.consts.SortType;

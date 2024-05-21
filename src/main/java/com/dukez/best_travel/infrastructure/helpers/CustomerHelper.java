@@ -1,7 +1,9 @@
 package com.dukez.best_travel.infrastructure.helpers;
 
-import com.dukez.best_travel.domain.repositories.CustomerRepository;
 import org.springframework.stereotype.Component;
+
+import com.dukez.best_travel.domain.repositories.jpa.CustomerRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 

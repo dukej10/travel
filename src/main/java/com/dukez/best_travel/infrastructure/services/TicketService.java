@@ -11,16 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dukez.best_travel.api.models.request.TicketRequest;
 import com.dukez.best_travel.api.models.response.FlyResponse;
 import com.dukez.best_travel.api.models.response.TicketResponse;
-import com.dukez.best_travel.domain.entities.TicketEntity;
-import com.dukez.best_travel.domain.repositories.CustomerRepository;
-import com.dukez.best_travel.domain.repositories.FlyRepository;
-import com.dukez.best_travel.domain.repositories.TicketRepository;
+import com.dukez.best_travel.domain.entities.jpa.TicketEntity;
+import com.dukez.best_travel.domain.repositories.jpa.CustomerRepository;
+import com.dukez.best_travel.domain.repositories.jpa.FlyRepository;
+import com.dukez.best_travel.domain.repositories.jpa.TicketRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.ITickerService;
 import com.dukez.best_travel.infrastructure.helpers.ApiCurrencyConnectorHelper;
 import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
 import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
 import com.dukez.best_travel.util.consts.Tables;
 import com.dukez.best_travel.util.exceptions.IdNotFoundException;
+import com.dukez.best_travel.util.functions.Functions;
 
 import org.springframework.beans.BeanUtils;
 
@@ -43,6 +44,7 @@ public class TicketService implements ITickerService {
     private BlackListHelper blackListHelper;
     public static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.25);
     private final ApiCurrencyConnectorHelper currencyConnectorHelper;
+    private final Functions functions;
 
     // nota: se puede ahorrar el siguiente constructor si se utiliza e
     // @AllArgsConstructor
@@ -78,6 +80,9 @@ public class TicketService implements ITickerService {
         this.customerHelper.incrase(customer.getDni(), this.getClass());
 
         log.info("Ticket saved with id {}", ticketPersist.getId());
+        // Enviar correo electrónico al cliente para confirmar la creación del ticket
+        this.functions.sendEmail(request.getEmail(), customer.getFullName(), Tables.customer.name());
+
         return this.entityToResponse(ticketPersist);
     }
 

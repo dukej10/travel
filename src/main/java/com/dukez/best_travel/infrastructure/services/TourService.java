@@ -9,19 +9,20 @@ import org.springframework.stereotype.Service;
 
 import com.dukez.best_travel.api.models.request.TourRequest;
 import com.dukez.best_travel.api.models.response.TourResponse;
-import com.dukez.best_travel.domain.entities.FlyEntity;
-import com.dukez.best_travel.domain.entities.HotelEntity;
-import com.dukez.best_travel.domain.entities.TourEntity;
-import com.dukez.best_travel.domain.repositories.CustomerRepository;
-import com.dukez.best_travel.domain.repositories.FlyRepository;
-import com.dukez.best_travel.domain.repositories.HotelRepository;
-import com.dukez.best_travel.domain.repositories.TourRepository;
+import com.dukez.best_travel.domain.entities.jpa.FlyEntity;
+import com.dukez.best_travel.domain.entities.jpa.HotelEntity;
+import com.dukez.best_travel.domain.entities.jpa.TourEntity;
+import com.dukez.best_travel.domain.repositories.jpa.CustomerRepository;
+import com.dukez.best_travel.domain.repositories.jpa.FlyRepository;
+import com.dukez.best_travel.domain.repositories.jpa.HotelRepository;
+import com.dukez.best_travel.domain.repositories.jpa.TourRepository;
 import com.dukez.best_travel.infrastructure.abstract_service.ITourService;
 import com.dukez.best_travel.infrastructure.helpers.BlackListHelper;
 import com.dukez.best_travel.infrastructure.helpers.CustomerHelper;
 import com.dukez.best_travel.infrastructure.helpers.TourHelper;
 import com.dukez.best_travel.util.consts.Tables;
 import com.dukez.best_travel.util.exceptions.IdNotFoundException;
+import com.dukez.best_travel.util.functions.Functions;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,7 @@ public class TourService implements ITourService {
         private final TourHelper tourHelper;
         private final CustomerHelper customerHelper;
         private BlackListHelper blackListHelper;
+        private final Functions functions;
 
         @Override
         public TourResponse create(TourRequest request) {
@@ -65,6 +67,8 @@ public class TourService implements ITourService {
                 var tourSaved = this.tourRepository.save(tourToSave);
                 // Incrementar el total de tours del cliente
                 this.customerHelper.incrase(customer.getDni(), this.getClass());
+                // Enviar correo electrónico al cliente para  confirmar la reserva
+                this.functions.sendEmail(request.getEmail(), customer.getFullName(), Tables.reservation.name());
                 return TourResponse.builder()
                                 .reservationsIds(tourSaved
                                                 .getReservations().stream().map(reservation -> reservation.getId())
